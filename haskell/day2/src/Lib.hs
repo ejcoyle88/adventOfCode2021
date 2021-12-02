@@ -4,24 +4,24 @@ module Lib
 
 handleInputs' :: (Int, Int) -> [[String]] -> Int
 handleInputs' (x,z) [] = x*z
-handleInputs' (x,z) ([direction, distStr]:xs) = 
-  if direction == "forward" then handleInputs' (x+distance,z) xs
-  else
-    if direction == "up" then handleInputs' (x,z-distance) xs
-    else handleInputs' (x,z+distance) xs
-  where distance = read distStr
+handleInputs' (x,z) ([direction, distStr]:xs)
+  | direction == "forward" = handleInputs' (x+distance,z) xs
+  | direction == "up" = handleInputs' (x,z-distance) xs
+  | direction == "down" = handleInputs' (x,z+distance) xs
+  | otherwise = handleInputs' (x,z) xs
+    where distance = read distStr
 
 handleInputs :: [[String]] -> Int
 handleInputs cmds = handleInputs' (0,0) cmds
 
 handleInputsWithAim' :: (Int, Int, Int) -> [[String]] -> Int
 handleInputsWithAim' (x,z,aim) [] = x*z
-handleInputsWithAim' (x,z,aim) ([direction, distStr]:xs) =
-  if direction == "forward" then handleInputsWithAim' (x+distance,z+(distance*aim),aim) xs
-  else
-    if direction == "up" then handleInputsWithAim' (x,z,aim-distance) xs
-    else handleInputsWithAim' (x,z,aim+distance) xs
-  where distance = read distStr
+handleInputsWithAim' (x,z,aim) ([direction, distStr]:xs)
+  | direction == "forward" = handleInputsWithAim' (x+distance,z+(distance*aim),aim) xs
+  | direction == "up" = handleInputsWithAim' (x,z,aim-distance) xs
+  | direction == "down" = handleInputsWithAim' (x,z,aim+distance) xs
+  | otherwise = handleInputsWithAim' (x,z,aim) xs
+    where distance = read distStr
 
 handleInputsWithAim :: [[String]] -> Int
 handleInputsWithAim cmds = handleInputsWithAim' (0,0,0) cmds
